@@ -42,16 +42,7 @@ public class CalculadoraBasica extends Application {
     // Sobrescribimos el método start() de la clase Application
     @Override
     public void start(Stage stage) {
-        // Creamos la barra de menú
-        MenuBar menuBar = new MenuBar();
-        // Crea el menú Ayuda
-        Menu acercaDeMenu = new Menu("Acerca de");
-        //Crea los elementos del menú 'Acerca De'
-        MenuItem autor = new MenuItem("Autor");
-        //Agrega el elemento al menú Acerca de
-        acercaDeMenu.getItems().addAll(autor);
-        //Agrega el menú a la barra de menú
-        menuBar.getMenus().addAll(acercaDeMenu);
+
         // Creamos un GridPane para organizar los elementos de la interfaz
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
@@ -160,7 +151,32 @@ public class CalculadoraBasica extends Application {
         });
         // Añadimos el botón al GridPane
         grid.add(btnCE, 4, 1);
-        grid.add(menuBar,0,0);
+
+        // Creamos la barra de menú
+        MenuBar menuBar = new MenuBar();
+        // Crea el menú Ayuda
+        Menu acercaDeMenu = new Menu("Acerca de");
+        //Crea los elementos del menú 'Acerca De'
+        MenuItem autor = new MenuItem("Autor");
+
+        autor.setOnAction(event -> {
+            //Crea el cuadro de diálogo
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("Autor");
+            dialog.setContentText("Autor: Antonio Miguel Núñez Ariza | 2ºDAM");
+            //Agrega un botón "Aceptar" al cuadro de diálogo
+            ButtonType aceptarButton = new ButtonType("Aceptar");
+            dialog.getDialogPane().getButtonTypes().add(aceptarButton);
+            dialog.show();
+        });
+
+        //Agrega el elemento al menú Acerca de
+        acercaDeMenu.getItems().add(autor);
+        //Agrega el menú a la barra de menú
+        menuBar.getMenus().add(acercaDeMenu);
+
+        //Añadimos la barra de menú
+        grid.add(menuBar, 0, 0);
         // Creamos una Scene y le asignamos el GridPane
         Scene scene = new Scene(grid, 350, 300);
         // Le asignamos un título a la ventana
