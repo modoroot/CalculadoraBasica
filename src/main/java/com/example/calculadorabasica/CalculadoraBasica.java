@@ -1,165 +1,46 @@
 package com.example.calculadorabasica;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+
 public class CalculadoraBasica extends Application {
 
-    // Creamos un TextField para mostrar el resultado de las operaciones
-    TextField tfResultado = new TextField();
+    // Creamos un TextField para mostrar los resultados
+    private TextField display = new TextField();
 
-    // Creamos una variable para guardar el primer operando
-    int operando1 = 0;
-    // Creamos una variable para guardar el segundo operando
-    int operando2 = 0;
-    // Creamos una variable para guardar el resultado de la operación
-    int resultado = 0;
-    // Creamos una variable para guardar el tipo de operación que se va a realizar
-    String operacion = "";
+    // Creamos una variable para almacenar el primer operando
+    private double operand1 = 0;
 
-    // Creamos un método para mostrar el resultado en el TextField
-    public void mostrarResultado() {
-// Convertimos el resultado a String y lo mostramos en el TextField
-        tfResultado.setText(String.valueOf(resultado));
-    }
+    // Creamos una variable para almacenar el segundo operando
+    private double operand2 = 0;
 
-    // Creamos un método para realizar las operaciones aritméticas
-    public void calcular() {
-// Comprobamos qué operación se va a realizar
-        switch (operacion) {
-            case "+" -> resultado = operando1 + operando2;
-            case "-" -> resultado = operando1 - operando2;
-            case "*" -> resultado = operando1 * operando2;
-            case "/" -> resultado = operando1 / operando2;
-        }
-    }
+    // Creamos una variable para almacenar el resultado
+    private double result = 0;
 
-    // Sobrescribimos el método start() de la clase Application
+    // Creamos una variable para almacenar la operación a realizar
+    private String operation = "";
+
+    // Creamos una variable para controlar si se está esperando por un segundo operando
+    private boolean waitingForSecondOperand = false;
+
     @Override
     public void start(Stage stage) {
-
-        // Creamos un GridPane para organizar los elementos de la interfaz
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
-
-        // Creamos un TextField para mostrar el resultado de las operaciones
-        tfResultado.setEditable(false);
-        tfResultado.setPrefWidth(225);
-        tfResultado.setPrefHeight(35);
-        tfResultado.setStyle("-fx-font: 24 arial;");
-        tfResultado.setAlignment(Pos.BOTTOM_RIGHT);
-        grid.add(tfResultado, 0, 0, 5, 1);
-        // Creamos las filas para los botones numéricos
-        for (int i = 1; i <= 9; i++) {
-            Button btn = new Button(String.valueOf(i));
-            btn.setPrefWidth(50);
-            btn.setPrefHeight(50);
-            btn.setStyle("-fx-font: 24 arial;");
-            // Asignamos un evento al botón para obtener el número al hacer clic en él
-            btn.setOnAction(event -> {
-                // Obtenemos el número del botón
-                String numero = btn.getText();
-                // Si no hay una operación seleccionada, añadimos el número al primer operando
-                if (operacion.equals("")) {
-                    operando1 = operando1 * 10 + Integer.parseInt(numero);
-                    mostrarResultado();
-                } else {
-                    // Si hay una operación seleccionada, añadimos el número al segundo operando
-                    operando2 = operando2 * 10 + Integer.parseInt(numero);
-                    mostrarResultado();
-                }
-            });
-            // Añadimos el botón al GridPane
-            grid.add(btn, (i - 1) % 3, (i - 1) / 3 + 1);
-        }
-
-        // Creamos un botón para el número 0
-        Button btn0 = new Button("0");
-        btn0.setPrefWidth(50);
-        btn0.setPrefHeight(50);
-        btn0.setStyle("-fx-font: 24 arial;");
-        // Asignamos un evento al botón para obtener el número al hacer clic en él
-        btn0.setOnAction(event -> {
-            // Obtenemos el número del botón
-            String numero = btn0.getText();
-            // Si no hay una operación seleccionada, añadimos el número al primer operando
-            if (operacion.equals("")) {
-                operando1 = operando1 * 10 + Integer.parseInt(numero);
-                mostrarResultado();
-            } else {
-                // Si hay una operación seleccionada, añadimos el número al segundo operando
-                operando2 = operando2 * 10 + Integer.parseInt(numero);
-                mostrarResultado();
-            }
-        });
-        // Añadimos el botón al GridPane
-        grid.add(btn0, 1, 4);
-
-        // Creamos una fila para los botones de operación
-        String[] operaciones = {"+", "-", "*", "/"};
-        for (int i = 0; i < 4; i++) {
-            Button btn = new Button(operaciones[i]);
-            btn.setPrefWidth(50);
-            btn.setPrefHeight(50);
-            btn.setStyle("-fx-font: 24 arial;");
-            // Asignamos un evento al botón para seleccionar la operación al hacer clic en él
-            btn.setOnAction(event -> {
-                // Obtenemos el símbolo de la operación del botón
-                operacion = btn.getText();
-            });
-            // Añadimos el botón al GridPane
-            grid.add(btn, 3, i + 1);
-        }
-
-        // Creamos un botón para el signo igual (=)
-        Button btnIgual = new Button("=");
-        btnIgual.setPrefWidth(50);
-        btnIgual.setPrefHeight(105);
-        btnIgual.setStyle("-fx-font: 24 arial;");
-        // Asignamos un evento al botón para calcular el resultado al hacer clic en él
-        btnIgual.setOnAction(event -> {
-            // Realizamos la operación seleccionada con los operandos introducidos
-            calcular();
-            // Mostramos el resultado en el TextField
-            mostrarResultado();
-            // Vaciamos las variables para poder realizar una nueva operación
-            operando1 = 0;
-            operando2 = 0;
-            resultado = 0;
-            operacion = "";
-        });
-        // Añadimos el botón al GridPane
-        grid.add(btnIgual, 3, 4, 1, 2);
-
-        // Creamos un botón para el signo de limpieza de la calculadora (CE)
-        Button btnCE = new Button("CE");
-        // Asignamos un evento al botón para limpiar la calculadora al hacer clic en él
-        btnCE.setOnAction(event -> {
-            // Vaciamos las variables y el TextField
-            operando1 = 0;
-            operando2 = 0;
-            resultado = 0;
-            operacion = "";
-            tfResultado.setText("");
-        });
-        // Añadimos el botón al GridPane
-        grid.add(btnCE, 4, 1);
-
         // Creamos la barra de menú
         MenuBar menuBar = new MenuBar();
-        // Crea el menú Ayuda
-        Menu acercaDeMenu = new Menu("Acerca de");
-        //Crea los elementos del menú 'Acerca De'
-        MenuItem autor = new MenuItem("Autor");
-        // Muestra el cuadro de diálogo al hacer clic en el elemento de menú "Autor"
-        autor.setOnAction(event -> {
+
+        // Creamos el menú "Archivo" y sus opciones
+        Menu fileMenu = new Menu("Acerca de");
+        MenuItem exitMenuItem = new MenuItem("Autor");
+        exitMenuItem.setOnAction(event -> {
             //Crea el cuadro de diálogo
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Autor");
@@ -169,25 +50,165 @@ public class CalculadoraBasica extends Application {
             dialog.getDialogPane().getButtonTypes().add(aceptarButton);
             dialog.show();
         });
-        //Agrega el elemento al menú Acerca de
-        acercaDeMenu.getItems().add(autor);
-        //Agrega el menú a la barra de menú
-        menuBar.getMenus().add(acercaDeMenu);
+        fileMenu.getItems().add(exitMenuItem);
 
-        //Añadimos la barra de menú
-        grid.add(menuBar, 0, 0);
-        // Creamos una Scene y le asignamos el GridPane
-        Scene scene = new Scene(grid, 350, 300);
-        // Le asignamos un título a la ventana
-        stage.setTitle("Mi primera calculadora");
-        // Le asignamos la Scene a la ventana
+        // Añadimos el menú "Archivo" a la barra de menú
+        menuBar.getMenus().add(fileMenu);
+
+        // Creamos el panel con los botones
+        GridPane buttonPanel = new GridPane();
+        buttonPanel.setHgap(5);
+        buttonPanel.setVgap(5);
+        buttonPanel.setPadding(new Insets(5));
+
+        // Creamos los botones y los añadimos al panel
+        Button btn1 = new Button("1");
+        btn1.setOnAction(event -> addDigit(1));
+        buttonPanel.add(btn1, 0, 0);
+
+        Button btn2 = new Button("2");
+        btn2.setOnAction(event -> addDigit(2));
+        buttonPanel.add(btn2, 1, 0);
+
+        Button btn3 = new Button("3");
+        btn3.setOnAction(event -> addDigit(3));
+        buttonPanel.add(btn3, 2, 0);
+        Button btn4 = new Button("4");
+        btn4.setOnAction(event -> addDigit(4));
+        buttonPanel.add(btn4, 0, 1);
+
+        Button btn5 = new Button("5");
+        btn5.setOnAction(event -> addDigit(5));
+        buttonPanel.add(btn5, 1, 1);
+
+        Button btn6 = new Button("6");
+        btn6.setOnAction(event -> addDigit(6));
+        buttonPanel.add(btn6, 2, 1);
+
+        Button btn7 = new Button("7");
+        btn7.setOnAction(event -> addDigit(7));
+        buttonPanel.add(btn7, 0, 2);
+
+        Button btn8 = new Button("8");
+        btn8.setOnAction(event -> addDigit(8));
+        buttonPanel.add(btn8, 1, 2);
+
+        Button btn9 = new Button("9");
+        btn9.setOnAction(event -> addDigit(9));
+        buttonPanel.add(btn9, 2, 2);
+
+        Button btn0 = new Button("0");
+        btn0.setOnAction(event -> addDigit(0));
+        buttonPanel.add(btn0, 0, 3);
+
+        Button btnDot = new Button(".");
+        btnDot.setOnAction(event -> addDot());
+        buttonPanel.add(btnDot, 1, 3);
+
+        Button btnEqual = new Button("=");
+        btnEqual.setOnAction(event -> calculateResult());
+        buttonPanel.add(btnEqual, 2, 3);
+
+        Button btnPlus = new Button("+");
+        btnPlus.setOnAction(event -> setOperation("+"));
+        buttonPanel.add(btnPlus, 3, 0);
+
+        Button btnMinus = new Button("-");
+        btnMinus.setOnAction(event -> setOperation("-"));
+        buttonPanel.add(btnMinus, 3, 1);
+
+        Button btnMultiply = new Button("*");
+        btnMultiply.setOnAction(event -> setOperation("*"));
+        buttonPanel.add(btnMultiply, 3, 2);
+
+        Button btnDivide = new Button("/");
+        btnDivide.setOnAction(event -> setOperation("/"));
+        buttonPanel.add(btnDivide, 3, 3);
+
+        // Creamos el botón de limpiar y lo añadimos al panel
+        Button btnClear = new Button("C");
+        btnClear.setOnAction(event -> clear());
+        buttonPanel.add(btnClear, 4, 0);
+
+        // Añadimos el panel con los botones y el TextField para mostrar los resultados a la escena
+        GridPane root = new GridPane();
+        root.add(menuBar, 0, 0);
+        root.add(display, 0, 1);
+        root.add(buttonPanel, 0, 2);
+
+        // Creamos la escena y asignamos la raíz al árbol de nodos
+        Scene scene = new Scene(root, 300, 250);
+        // Asignamos la escena al stage y mostramos la ventana
         stage.setScene(scene);
-        // Mostramos la ventana
+        stage.setTitle("Mi primera Calculadora");
         stage.show();
     }
 
-    // Creamos el método main() para lanzar la aplicación
+    // Método para añadir un dígito al TextField
+    private void addDigit(int digit) {
+        if (waitingForSecondOperand) {
+            display.setText("");
+            waitingForSecondOperand = false;
+        }
+
+        String text = display.getText();
+        if (!text.equals("0")) {
+            display.setText(text + digit);
+        } else {
+            display.setText(String.valueOf(digit));
+        }
+    }
+
+    // Método para añadir un punto decimal al TextField
+    private void addDot() {
+        if (waitingForSecondOperand) {
+            display.setText("");
+            waitingForSecondOperand = false;
+        }
+
+        String text = display.getText();
+        if (!text.contains(".")) {
+            display.setText(text + ".");
+        }
+    }
+
+    // Método para establecer la operación a realizar
+    private void setOperation(String op) {
+        operand1 = Double.parseDouble(display.getText());
+        operation = op;
+        waitingForSecondOperand = true;
+    }
+
+    // Método para calcular el resultado de la operación
+    private void calculateResult() {
+        operand2 = Double.parseDouble(display.getText());
+
+        switch (operation) {
+            case "+":
+                result = operand1 + operand2;
+                break;
+            case "-":
+                result = operand1 - operand2;
+                break;
+            case "*":
+                result = operand1 * operand2;
+                break;
+            case "/":
+                result = operand1 / operand2;
+                break;
+        }
+
+        display.setText(String.valueOf(result));
+    }
+
+    private void clear() {
+
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+
+
+
