@@ -14,13 +14,13 @@ public class CalculadoraBasica extends Application {
     private TextField textField = new TextField("0");
 
     // Creamos una variable para almacenar el primer operando
-    private double operand1 = 0;
+    private int operand1 = 0;
 
     // Creamos una variable para almacenar el segundo operando
-    private double operand2 = 0;
+    private int operand2 = 0;
 
     // Creamos una variable para almacenar el resultado
-    private double result = 0;
+    private int result = 0;
 
     // Creamos una variable para almacenar la operación a realizar
     private String operacion = "";
@@ -154,14 +154,14 @@ public class CalculadoraBasica extends Application {
 
     // Método para establecer la operación a realizar
     private void setOperacion(String op) {
-        operand1 = Double.parseDouble(textField.getText());
+        operand1 = Integer.parseInt(textField.getText());
         operacion = op;
         isSegundoOperando = true;
     }
 
     // Método para calcular el resultado de la operación
     private void calculateResult() {
-        operand2 = Double.parseDouble(textField.getText());
+        operand2 = Integer.parseInt(textField.getText());
 
         switch (operacion) {
             case "+":
