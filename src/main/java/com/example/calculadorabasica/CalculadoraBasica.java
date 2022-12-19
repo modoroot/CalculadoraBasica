@@ -46,9 +46,10 @@ public class CalculadoraBasica extends Application {
             dialog.getDialogPane().getButtonTypes().add(aceptarButton);
             dialog.show();
         });
+        //Añade el subítem al menú
         acercaDeMenu.getItems().add(autorMenuItem);
 
-        // Añadimos el menú "Archivo" a la barra de menú
+        // Añadimos el menú "Acerca de" a la barra de menú
         menuBar.getMenus().add(acercaDeMenu);
 
         // Creamos el panel con los botones
@@ -97,9 +98,10 @@ public class CalculadoraBasica extends Application {
         btn0.setOnAction(event -> addDigit(0));
         buttonPanel.add(btn0, 0, 3);
 
-        Button btnDot = new Button(".");
-        btnDot.setOnAction(event -> addDot());
-        buttonPanel.add(btnDot, 1, 3);
+        // Creamos el botón de limpiar y lo añadimos al panel
+        Button btnClear = new Button("C");
+        btnClear.setOnAction(event -> clear());
+        buttonPanel.add(btnClear, 1, 3);
 
         Button btnEqual = new Button("=");
         btnEqual.setOnAction(event -> calculateResult());
@@ -120,11 +122,6 @@ public class CalculadoraBasica extends Application {
         Button btnDivide = new Button("/");
         btnDivide.setOnAction(event -> setOperacion("/"));
         buttonPanel.add(btnDivide, 3, 3);
-
-        // Creamos el botón de limpiar y lo añadimos al panel
-        Button btnClear = new Button("C");
-        btnClear.setOnAction(event -> clear());
-        buttonPanel.add(btnClear, 4, 0);
 
         // Añadimos el panel con los botones y el TextField para mostrar los resultados a la escena
         GridPane root = new GridPane();
@@ -152,19 +149,6 @@ public class CalculadoraBasica extends Application {
             textField.setText(text + digit);
         } else {
             textField.setText(String.valueOf(digit));
-        }
-    }
-
-    // Método para añadir un punto decimal al TextField
-    private void addDot() {
-        if (isSegundoOperando) {
-            textField.setText("");
-            isSegundoOperando = false;
-        }
-
-        String text = textField.getText();
-        if (!text.contains(".")) {
-            textField.setText(text + ".");
         }
     }
 
@@ -197,6 +181,9 @@ public class CalculadoraBasica extends Application {
         textField.setText(String.valueOf(result));
     }
 
+    /**
+     * Limpia el TextField y las posibles variables guardadas con algún número
+     */
     private void clear() {
         operand1=0;
         operand2=0;
@@ -205,6 +192,10 @@ public class CalculadoraBasica extends Application {
         textField.setText("");
     }
 
+    /**
+     * Lanza el programa
+     * @param args
+     */
     public static void main(String[] args) {
         launch(args);
     }
