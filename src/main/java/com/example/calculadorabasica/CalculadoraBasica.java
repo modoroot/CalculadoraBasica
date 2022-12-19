@@ -158,7 +158,7 @@ public class CalculadoraBasica extends Application {
         Menu acercaDeMenu = new Menu("Acerca de");
         //Crea los elementos del menú 'Acerca De'
         MenuItem autor = new MenuItem("Autor");
-
+        // Muestra el cuadro de diálogo al hacer clic en el elemento de menú "Autor"
         autor.setOnAction(event -> {
             //Crea el cuadro de diálogo
             Dialog<ButtonType> dialog = new Dialog<>();
@@ -169,7 +169,6 @@ public class CalculadoraBasica extends Application {
             dialog.getDialogPane().getButtonTypes().add(aceptarButton);
             dialog.show();
         });
-
         //Agrega el elemento al menú Acerca de
         acercaDeMenu.getItems().add(autor);
         //Agrega el menú a la barra de menú
