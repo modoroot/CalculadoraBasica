@@ -33,7 +33,7 @@ public class CalculadoraBasica extends Application {
         // Creamos la barra de menú
         MenuBar menuBar = new MenuBar();
 
-        // Creamos el menú "Archivo" y sus opciones
+        // Creamos el menú "Acerca de" y sus opciones
         Menu acercaDeMenu = new Menu("Acerca de");
         MenuItem autorMenuItem = new MenuItem("Autor");
         autorMenuItem.setOnAction(event -> {
