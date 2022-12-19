@@ -14,10 +14,10 @@ public class CalculadoraBasica extends Application {
     private TextField textField = new TextField("0");
 
     // Creamos una variable para almacenar el primer operando
-    private int operand1 = 0;
+    private int operando1 = 0;
 
     // Creamos una variable para almacenar el segundo operando
-    private int operand2 = 0;
+    private int operando2 = 0;
 
     // Creamos una variable para almacenar el resultado
     private int result = 0;
@@ -154,27 +154,27 @@ public class CalculadoraBasica extends Application {
 
     // Método para establecer la operación a realizar
     private void setOperacion(String op) {
-        operand1 = Integer.parseInt(textField.getText());
+        operando1 = Integer.parseInt(textField.getText());
         operacion = op;
         isSegundoOperando = true;
     }
 
     // Método para calcular el resultado de la operación
     private void calculateResult() {
-        operand2 = Integer.parseInt(textField.getText());
+        operando2 = Integer.parseInt(textField.getText());
 
         switch (operacion) {
             case "+":
-                result = operand1 + operand2;
+                result = operando1 + operando2;
                 break;
             case "-":
-                result = operand1 - operand2;
+                result = operando1 - operando2;
                 break;
             case "*":
-                result = operand1 * operand2;
+                result = operando1 * operando2;
                 break;
             case "/":
-                result = operand1 / operand2;
+                result = operando1 / operando2;
                 break;
         }
 
@@ -185,10 +185,10 @@ public class CalculadoraBasica extends Application {
      * Limpia el TextField y las posibles variables guardadas con algún número
      */
     private void clear() {
-        operand1=0;
-        operand2=0;
+        operando1=0;
+        operando2=0;
         result=0;
-        operacion ="";
+        operacion="";
         textField.setText("");
     }
 
