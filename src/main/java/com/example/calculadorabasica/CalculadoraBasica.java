@@ -1,13 +1,9 @@
 package com.example.calculadorabasica;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -15,7 +11,7 @@ import javafx.stage.Stage;
 public class CalculadoraBasica extends Application {
 
     // Creamos un TextField para mostrar los resultados
-    private TextField display = new TextField();
+    private TextField textField = new TextField("0");
 
     // Creamos una variable para almacenar el primer operando
     private double operand1 = 0;
@@ -27,10 +23,10 @@ public class CalculadoraBasica extends Application {
     private double result = 0;
 
     // Creamos una variable para almacenar la operación a realizar
-    private String operation = "";
+    private String operacion = "";
 
     // Creamos una variable para controlar si se está esperando por un segundo operando
-    private boolean waitingForSecondOperand = false;
+    private boolean isSegundoOperando = false;
 
     @Override
     public void start(Stage stage) {
@@ -38,9 +34,9 @@ public class CalculadoraBasica extends Application {
         MenuBar menuBar = new MenuBar();
 
         // Creamos el menú "Archivo" y sus opciones
-        Menu fileMenu = new Menu("Acerca de");
-        MenuItem exitMenuItem = new MenuItem("Autor");
-        exitMenuItem.setOnAction(event -> {
+        Menu acercaDeMenu = new Menu("Acerca de");
+        MenuItem autorMenuItem = new MenuItem("Autor");
+        autorMenuItem.setOnAction(event -> {
             //Crea el cuadro de diálogo
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setTitle("Autor");
@@ -50,10 +46,10 @@ public class CalculadoraBasica extends Application {
             dialog.getDialogPane().getButtonTypes().add(aceptarButton);
             dialog.show();
         });
-        fileMenu.getItems().add(exitMenuItem);
+        acercaDeMenu.getItems().add(autorMenuItem);
 
         // Añadimos el menú "Archivo" a la barra de menú
-        menuBar.getMenus().add(fileMenu);
+        menuBar.getMenus().add(acercaDeMenu);
 
         // Creamos el panel con los botones
         GridPane buttonPanel = new GridPane();
@@ -110,19 +106,19 @@ public class CalculadoraBasica extends Application {
         buttonPanel.add(btnEqual, 2, 3);
 
         Button btnPlus = new Button("+");
-        btnPlus.setOnAction(event -> setOperation("+"));
+        btnPlus.setOnAction(event -> setOperacion("+"));
         buttonPanel.add(btnPlus, 3, 0);
 
         Button btnMinus = new Button("-");
-        btnMinus.setOnAction(event -> setOperation("-"));
+        btnMinus.setOnAction(event -> setOperacion("-"));
         buttonPanel.add(btnMinus, 3, 1);
 
         Button btnMultiply = new Button("*");
-        btnMultiply.setOnAction(event -> setOperation("*"));
+        btnMultiply.setOnAction(event -> setOperacion("*"));
         buttonPanel.add(btnMultiply, 3, 2);
 
         Button btnDivide = new Button("/");
-        btnDivide.setOnAction(event -> setOperation("/"));
+        btnDivide.setOnAction(event -> setOperacion("/"));
         buttonPanel.add(btnDivide, 3, 3);
 
         // Creamos el botón de limpiar y lo añadimos al panel
@@ -133,11 +129,11 @@ public class CalculadoraBasica extends Application {
         // Añadimos el panel con los botones y el TextField para mostrar los resultados a la escena
         GridPane root = new GridPane();
         root.add(menuBar, 0, 0);
-        root.add(display, 0, 1);
+        root.add(textField, 0, 1);
         root.add(buttonPanel, 0, 2);
 
         // Creamos la escena y asignamos la raíz al árbol de nodos
-        Scene scene = new Scene(root, 300, 250);
+        Scene scene = new Scene(root, 200, 180);
         // Asignamos la escena al stage y mostramos la ventana
         stage.setScene(scene);
         stage.setTitle("Mi primera Calculadora");
@@ -146,44 +142,44 @@ public class CalculadoraBasica extends Application {
 
     // Método para añadir un dígito al TextField
     private void addDigit(int digit) {
-        if (waitingForSecondOperand) {
-            display.setText("");
-            waitingForSecondOperand = false;
+        if (isSegundoOperando) {
+            textField.setText("");
+            isSegundoOperando = false;
         }
 
-        String text = display.getText();
+        String text = textField.getText();
         if (!text.equals("0")) {
-            display.setText(text + digit);
+            textField.setText(text + digit);
         } else {
-            display.setText(String.valueOf(digit));
+            textField.setText(String.valueOf(digit));
         }
     }
 
     // Método para añadir un punto decimal al TextField
     private void addDot() {
-        if (waitingForSecondOperand) {
-            display.setText("");
-            waitingForSecondOperand = false;
+        if (isSegundoOperando) {
+            textField.setText("");
+            isSegundoOperando = false;
         }
 
-        String text = display.getText();
+        String text = textField.getText();
         if (!text.contains(".")) {
-            display.setText(text + ".");
+            textField.setText(text + ".");
         }
     }
 
     // Método para establecer la operación a realizar
-    private void setOperation(String op) {
-        operand1 = Double.parseDouble(display.getText());
-        operation = op;
-        waitingForSecondOperand = true;
+    private void setOperacion(String op) {
+        operand1 = Double.parseDouble(textField.getText());
+        operacion = op;
+        isSegundoOperando = true;
     }
 
     // Método para calcular el resultado de la operación
     private void calculateResult() {
-        operand2 = Double.parseDouble(display.getText());
+        operand2 = Double.parseDouble(textField.getText());
 
-        switch (operation) {
+        switch (operacion) {
             case "+":
                 result = operand1 + operand2;
                 break;
@@ -198,11 +194,15 @@ public class CalculadoraBasica extends Application {
                 break;
         }
 
-        display.setText(String.valueOf(result));
+        textField.setText(String.valueOf(result));
     }
 
     private void clear() {
-
+        operand1=0;
+        operand2=0;
+        result=0;
+        operacion ="";
+        textField.setText("");
     }
 
     public static void main(String[] args) {
